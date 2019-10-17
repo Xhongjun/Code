@@ -1,0 +1,3 @@
+com\xgdfin\domain\User.class
+com\xgdfin\rpc\IRpcServerApi.class
+com\xgdfin\rpc\RpcRequest.class
