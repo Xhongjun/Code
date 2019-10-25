@@ -12,7 +12,7 @@ import java.io.IOException;
 public class ServerAnnApp {
     public static void main( String[] args ) throws IOException {
 
-        ApplicationContext context = new AnnotationConfigApplicationContext(RpcServerConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(RpcAnnServerConfig.class);
         ((AnnotationConfigApplicationContext) context).start();
     }
 }

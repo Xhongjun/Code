@@ -12,7 +12,7 @@ import java.io.IOException;
 public class ServerBaseApp {
     public static void main( String[] args ) throws IOException {
 
-        IRpcServerApi rpcServer = new RpcServerApiImpl();
+        IRpcServerApi rpcServer = new RpcServerApiBaseImpl();
         RpcServerProxy serverProxy = new RpcServerProxy();
         System.out.println("Server start ... ");
         serverProxy.publisher(8083, rpcServer);
