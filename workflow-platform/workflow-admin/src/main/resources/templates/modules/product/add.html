@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+  <form class="form-horizontal m" id="form-product-add">
+    <div class="form-group">
+      <label class="col-sm-3 control-label">产品标志：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-prodFlag" name="prodFlag" onblur="verifProdFlag()" placeholder="--必输项--" class="form-control"
+               type="text">
+        <span style="color: red; " hidden/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">产品编码：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-prodCode" name="prodCode" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">产品名称：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-prodName" name="prodName" placeholder="--必输项--" class="form-control" type="text">
+        <span style="color: red; " hidden/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">产品状态：</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="pro-add-prodStatus" name="prodStatus"
+                th:with="type=${@dict.getType('pro_prod_status')}">
+          <option value=""></option>
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">产品类型：</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="pro-add-prodType" name="prodType"
+                th:with="type=${@dict.getType('pro_prod_type')}">
+          <option value=""></option>
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">所属服务：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-service" name="service" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">申请表：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-applyTable" name="applyTable" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">结果表：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-resultTable" name="resultTable" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">上线金服：</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="pro-add-isXgdfin" name="isXgdfin"
+                th:with="type=${@dict.getType('pro_is_xgdfin')}">
+          <option value=""></option>
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">上线信联：</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="pro-add-isCredlink" name="isCredlink"
+                th:with="type=${@dict.getType('pro_is_credlink')}">
+          <option value=""></option>
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">上线银行：</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="pro-add-isBank" name="isBank" th:with="type=${@dict.getType('pro_is_bank')}"
+                onchange="add_selectChilInputVisible('pro-add-isBank', 'pro-add-banklist')">
+          <option value=""></option>
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" hidden>
+      <label class="col-sm-3 control-label">上线银行列表：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-banklist" name="banklist" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">组合产品：</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="pro-add-isComb" name="isComb" th:with="type=${@dict.getType('pro_is_comb')}"
+                onchange="add_selectChilInputVisible('pro-add-isComb', 'pro-add-dependProdFlag')">
+          <option value=""></option>
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" hidden>
+      <label class="col-sm-3 control-label">依赖产品标志：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-dependProdFlag" name="dependProdFlag" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Demo名：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-demo" name="demo" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">类名称：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-className" name="className" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">方法名：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-function" name="function" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Ins菜单：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-ins" name="ins" placeholder="格式:/xx/xx.do,不需要host:port" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Api接口：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-api" name="api" placeholder="格式:/xx/xx.do,不需要host:port" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">开发人员：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-kfPersonName" name="kfPersonName" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">备注信息：</label>
+      <div class="col-sm-8">
+        <input id="pro-add-remark" name="remark" class="form-control" type="text">
+      </div>
+    </div>
+  </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+
+  var prefix = ctx + "module/product";
+
+  $("#form-product-add").validate({
+    rules: {
+      xxxx: {
+        required: true,
+      },
+    }
+  });
+
+  // select带出关联输入框
+  function add_selectChilInputVisible(parentId, chilId) {
+    var isBankSelect = $("#" + parentId).val();
+    if (isBankSelect == '1') {
+      $("#" + chilId).parents(".form-group").show();
+    } else {
+      $("#" + chilId).parents(".form-group").hide();
+    }
+
+  }
+
+  // 参数校验
+  function add_paramVerifi() {
+
+    var allInpSel = $('#form-product-add').find('#pro-add-prodFlag, #pro-add-prodName');
+    var verifiFlag = true;
+
+    allInpSel.each(function (i) {
+
+      var inpSelValue = $(this).val().trim();
+
+      //为空、包含空格校验
+      if (inpSelValue == '' || inpSelValue == null || inpSelValue.indexOf(" ") >= 0) {
+        var labelName = $(this).parent().prev("label").text();
+        $.modal.alertWarning(labelName + " 必输项为空或中间包含空格");
+        $(this).parent().find('span').text('必输项为空或中间包含空格').show();
+        // break
+        return false;
+      } else {
+        if (i > 0) {
+          $(this).parent().find('span').hide();
+        }
+      }
+    });
+
+    if ($("span").is(':visible')) {
+      verifiFlag = false;
+    }
+
+    return verifiFlag;
+  }
+
+  // 提交
+  function submitHandler() {
+    if ($.validate.form()) {
+      var flag = add_paramVerifi();
+      if (flag == false) {
+        return flag;
+      }
+      $.operate.save(prefix + "/add", $('#form-product-add').serialize());
+    }
+  }
+
+  // 产品标志唯一性校验
+  function verifProdFlag() {
+    var flagValue = $('#pro-add-prodFlag').val().trim();
+    $.ajax({
+      type: 'post',
+      url: "/module/product/verifProdFlag?flagValue=" + flagValue + "&type=prod",
+      success: function (data) {
+        if (data.rspCode != '000000') {
+          $("#pro-add-prodFlag").parent().find("span").text(data.rspMsg).show();
+        } else {
+          $("#pro-add-prodFlag").parent().find("span").hide();
+        }
+      }
+    });
+  }
+</script>
+</body>
+</html>
