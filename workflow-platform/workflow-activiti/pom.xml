@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>workflow-platform</artifactId>
+    <groupId>com.xgdfin</groupId>
+    <version>3.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>war</packaging>
+  <artifactId>workflow-activity</artifactId>
+
+  <description>
+    activity工作流服务
+  </description>
+
+  <properties>
+    <activiti.version>5.22.0</activiti.version>
+  </properties>
+  <dependencies>
+    <!-- activiti -->
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-engine</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-spring</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-modeler</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-diagram-rest</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+
+    <!-- 系统模块-->
+    <dependency>
+      <groupId>com.xgdfin</groupId>
+      <artifactId>workflow-common</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+    </dependency>
+  </dependencies>
+</project>

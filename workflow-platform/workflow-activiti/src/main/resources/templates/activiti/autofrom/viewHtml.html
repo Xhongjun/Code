@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('视图预览')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <div th:utext="${udFormInfo.formContent}"></div>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		function submitHandler() {
+	        $.modal.close();
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改自定义单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-udFormInfo-edit" th:object="${udFormInfo}">
+            <input id="formId" name="formId" th:field="*{formId}"  type="hidden">
+            <input id="formContent"  th:field="*{formContent}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label"><span style="color: red;">*</span>表单名称：</label>
+				<div class="col-sm-8">
+					<input id="formName" name="formName" th:field="*{formName}" class="form-control" type="text" required >
+				</div>
+			</div>
+			<div class="form-group" id="xuanzeqiye2">
+				<label class="col-sm-3 control-label"><span style="color: red;">*</span>表单内容：</label>
+				<div class="col-sm-8">
+					<div class="input-group">
+						<input id='location' class="form-control" onclick="$('#i-file').click();">
+						<label class="input-group-btn">
+							<input type="button" id="i-check" value="浏览文件" class="btn btn-dark" onclick="$('#i-file').click();">
+						</label>
+					</div>
+				</div>
+				<input type="file" name="file" id='i-file'  accept=".txt" onchange="$('#location').val($('#i-file').val());" style="display: none">
+			</div>	
+			<div class="form-group">
+				<label class="col-sm-3 control-label">表单操作：</label>
+				<div class="col-sm-8">
+					<button type="button" class="btn btn-dark" id="cknr">查看源码</button>
+					<button type="button" class="btn btn-dark" id="ylst">预览视图</button>
+				</div>
+			</div>	
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注说明：</label>
+				<div class="col-sm-8">
+					<input id="description" name="description" th:field="*{description}" class="form-control" type="text">
+				</div>
+			</div>
+			
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "activiti/udFormInfo";
+		
+		$("#form-udFormInfo-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+			if ($.validate.form()) {
+				var file = $("#i-file")[0].files[0];
+				if ($("#fromName").val() == '') {
+		            $.modal.alertWarning("请选输入自定义表单模板名称");
+		            return;
+		        }
+		        
+		        var formData = new FormData();
+		        formData.append("file", file);
+				formData.append("formName", $("#formName").val());
+				formData.append("description", $("#description").val());
+				formData.append("formId", $("#formId").val());
+		        $.ajax({
+		            url: prefix + "/edit",
+		            type: "POST",
+		            dataType: "json",
+		            cache: false,			//上传文件无需缓存
+		            processData: false,//用于对data参数进行序列化处理 这里必须false
+		            contentType: false, //必须
+		            data: formData,
+		            beforeSend: function () {
+		                $.modal.loading("正在处理中，请稍后...");
+		                $.modal.disable();
+		            },
+		            success: function (result) {
+		                $.operate.successCallback(result);
+		            },
+		            error: function () {
+		                $.modal.alertError("网络异常");
+		            }
+		        });
+			}
+	        
+	    }
+	    
+	    $(function(){
+	    	$("#cknr,#ylst").click(function(){
+	    		var file = $("#i-file")[0].files[0];
+	    		/* if (file === undefined || file === null) {
+		            $.modal.alertWarning("请选择需要上传的文件");
+		            return;
+		        }
+		        if (file.name.indexOf(".txt") === -1) {
+		            $.modal.alertWarning("文件格式不对，请上传txt格式文件");
+		            return;
+		        } */
+		        if (file === undefined || file === null || file.name.indexOf(".txt") === -1) {
+		        	if($(this)[0].id == 'cknr'){
+		        		$_model = get_modal($("#formContent").val()).modal("show");
+		        	}else{
+		        		//viewHtml();
+		        		layer.open({
+						  title: '查看内容',
+						  area: ['700px', '400px'],					  
+						  content: $("#formContent").val()
+						});
+		        	}
+		        	return;
+		        }
+		        
+		        jsReadFiles(file,$(this)[0].id);
+	    	});
+	    });
+	    
+	    var $_model;
+	    var jsReadFiles = function (files,id) {
+	    	var reader = new FileReader();//new一个FileReader实例
+	    	if (/text+/.test(files.type)) {//判断文件类型，是不是text类型
+            	reader.readAsText(files,"UTF-8");
+            	reader.onload = function() {
+	                if(id == 'cknr'){
+	                	$_model = get_modal(this.result).modal("show");
+	                }else{
+	                	layer.open({
+						  title: '查看内容',
+						  area: ['700px', '400px'],					  
+						  content: this.result
+						});
+	                }
+	            }
+            }
+	    }
+	    
+	    var get_modal = function(content) {
+		    var modal = $('<div class="modal" style="overflow: auto;" tabindex="-1">	<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a><h4 class="modal-title">查看源码</h4></div><div class="modal-body ui-front">	<textarea class="form-control textarea-show-src"  style="min-height: 200px; margin-bottom: 10px;font-family: Monaco, Fixed"></textarea><button class="btn btn-success" onclick="modelHide()" >关闭</button></div></div></div></div>').appendTo(document.body);
+		    var doms = document.getElementsByClassName("textarea-show-src");
+		    for (var i = 0; i < doms.length; i++) {
+		        doms.item(i).innerHTML = content;
+		    }
+		    return modal
+		};
+		
+		function modelHide(){
+			$_model.modal("hide");
+		}
+	    
+	    function viewHtml(){
+	    	var url = prefix + '/view/html?formId='+$("#formId").val();
+			$.modal.openFull("查看表单", url);
+	    }
+	   
+	</script>
+</body>
+</html>
