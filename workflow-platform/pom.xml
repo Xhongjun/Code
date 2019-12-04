@@ -12,6 +12,7 @@
   <description>信联征信作业系统</description>
 
   <properties>
+    <lombok.version>1.18.8</lombok.version>
     <workflow.version>3.0</workflow.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
